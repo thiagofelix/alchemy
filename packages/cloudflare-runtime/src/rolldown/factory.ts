@@ -46,6 +46,10 @@ export function createPlugin<TName extends string, A = any>(
     vite: (options: BasePluginOptions) => {
       const plugin = make(options);
       if (!plugin) return null;
+      // @ts-expect-error TS2321 — tsc 7 (tsgo) hits its recursion limit
+      // comparing vite's bundled rolldown hook types against the standalone
+      // `rolldown` package's structurally-identical types when spreading
+      // `plugin.shared` here. Purely a checker limit; the shapes match.
       const vitePlugin = {
         name,
         sharedDuringBuild: true,
