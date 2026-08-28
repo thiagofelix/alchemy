@@ -467,8 +467,9 @@ async function handler(event) {
   }
   ${CF_ROUTER_INJECTION}
 
+  var routerNS = "${kvNamespace}";
+
   async function getRoutes() {
-    var routerNS = "${kvNamespace}";
     var routes = [];
     try {
       var v = await cf.kvs().get(routerNS + ":routes");
@@ -509,7 +510,8 @@ async function handler(event) {
       try {
         var type = match.type;
         var routeNs = match.routeNs;
-        var v = await cf.kvs().get(routeNs + ":metadata");
+        var metadataKey = type === "site" ? routeNs + ":metadata" : routerNS + ":" + routeNs + ":metadata";
+        var v = await cf.kvs().get(metadataKey);
         return { type: type, routeNs: routeNs, metadata: JSON.parse(v) };
       } catch (e) {}
     }
