@@ -74,3 +74,4 @@ examples/cloudflare-worker/src/scratch.ts
 .ai-workspace/
 /processes/
 .probe
+/.direnv
